@@ -2,8 +2,15 @@ var express = require('express');
 var app = express();
 var months = require('./months');
 
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + 'views'));
+
 app.get('/', function (req, res) {
-  res.send('hello');
+	var data = {
+		title: "Timestamp microservice",
+		subtitle: "freeCodeCamp Challenge"
+	}
+	res.render('index', data);
 });
 
 app.get('/:input', function(req, res) {
