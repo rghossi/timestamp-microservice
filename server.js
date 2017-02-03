@@ -6,15 +6,22 @@ app.get('/', function (req, res) {
   res.send('hello');
 });
 
-app.get('/:timestamp', function(req, res) {
+app.get('/:input', function(req, res) {
 	var result;
-	var unix = parseInt(req.params.timestamp);
-	var date = new Date(unix*1000);
-	var day = date.getDate();
-	var month = date.getMonth();
-	var year = date.getFullYear();
-	var natural = months[month] + " " + ++day + ", " + year;
-	result = {unix: unix, natural: natural};
+	var input = parseInt(req.params.input);
+	var date = new Date(input*1000);
+	if (input) {
+		var day = date.getDate();
+		var month = date.getMonth();
+		var year = date.getFullYear();
+		var natural = months[month] + " " + day + ", " + year;
+		result = {unix: input, natural: natural};
+	} else  {
+		var timestamp = + new Date(req.params.input);
+		var unix = timestamp/1000;
+		var natural = unix ? req.params.input : null;
+		result = {unix: unix, natural: natural};
+	}
 	res.json(result);
 });
 
